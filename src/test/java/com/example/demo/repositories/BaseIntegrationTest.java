@@ -5,17 +5,22 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 public abstract class BaseIntegrationTest {
 
+    private static final boolean IS_CI = System.getenv("GITHUB_ACTIONS") != null;
+
     static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
-            new PostgreSQLContainer<>("postgres:15")
+            !IS_CI ? new PostgreSQLContainer<>("postgres:15")
                     .withDatabaseName("testdb")
                     .withUsername("testuser")
-                    .withPassword("testpass");
+                    .withPassword("testpass")
+                    : null;
 
     @BeforeAll
     static void startContainer() {
-        POSTGRESQL_CONTAINER.start();
-        System.setProperty("TEST_DB_URL", POSTGRESQL_CONTAINER.getJdbcUrl());
-        System.setProperty("TEST_DB_USERNAME", POSTGRESQL_CONTAINER.getUsername());
-        System.setProperty("TEST_DB_PASSWORD", POSTGRESQL_CONTAINER.getPassword());
+        if (!IS_CI) {
+            POSTGRESQL_CONTAINER.start();
+            System.setProperty("TEST_DB_URL", POSTGRESQL_CONTAINER.getJdbcUrl());
+            System.setProperty("TEST_DB_USERNAME", POSTGRESQL_CONTAINER.getUsername());
+            System.setProperty("TEST_DB_PASSWORD", POSTGRESQL_CONTAINER.getPassword());
+        }
     }
 }
