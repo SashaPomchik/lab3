@@ -9,7 +9,7 @@
     <!-- Таблиця Categories -->
     <changeSet author="yourname" id="1">
         <createTable tableName="categories">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -18,10 +18,11 @@
         </createTable>
     </changeSet>
 
+
     <!-- Таблиця Products -->
     <changeSet author="yourname" id="2">
         <createTable tableName="products">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -92,6 +93,9 @@
     <!-- Таблиця зв'язку між замовленнями та продуктами -->
     <changeSet author="yourname" id="7">
         <createTable tableName="order_products">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="order_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
